@@ -1,5 +1,5 @@
 # CODETECH-Task-2-1
-# : Prajapati Udit Mukesh
+# Name : Prajapati Udit Mukesh
 # Company: CODTECH IT SOLUTIONS
 # Id: CT12EHC
 # Domain: SQL
