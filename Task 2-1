@@ -1,0 +1,133 @@
+PERFORM INNER, LEFT, RIGHT, AND
+FULL JOINS ON TABLES TO COMBINE
+DATA MEANINGFULLY.
+
+DELIVERABLE: A SET OF JOIN QUERIES
+AND THEIR OUTPUTS.
+###########################################################################################################
+
+mysql> create database company;
+Query OK, 1 row affected (0.02 sec)
+------------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> show databases;
++--------------------------+
+| Database                 |
++--------------------------+
+| banking                  |
+| company                  |
+| employeemanagementsystem |
+| hospital_db              |
+| hotelbookingsystem       |
+| information_schema       |
+| library_db               |
+| librarydb                |
+| movierental              |
+| mysql                    |
+| mysql_python             |
+| performance_schema       |
+| studentrecordsmgmt       |
+| sys                      |
++--------------------------+
+14 rows in set (0.00 sec)
+------------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> use company;
+Database changed
+mysql> -- Create employees table
+mysql> CREATE TABLE employees (
+    ->     emp_id INT PRIMARY KEY,
+    ->     name VARCHAR(100),
+    ->     dept_id INT
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+------------------------------------------------------------------------------------------------------------------------------------------------------
+mysql>
+mysql> -- Create department table
+mysql> CREATE TABLE department (
+    ->     dept_id INT PRIMARY KEY,
+    ->     dept_name VARCHAR(100)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+------------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> -- Insert data into employees table
+mysql> INSERT INTO employees (emp_id, name, dept_id)
+    -> VALUES
+    -> (1, 'John', 101),
+    -> (2, 'Sarah', 102),
+    -> (3, 'Mike', 103),
+    -> (4, 'Rachel', 104);
+Query OK, 4 rows affected (0.02 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+------------------------------------------------------------------------------------------------------------------------------------------------------
+mysql>
+mysql> -- Insert data into department table with matching dept_id values
+mysql> INSERT INTO department (dept_id, dept_name)
+    -> VALUES
+    -> (101, 'HR'),
+    -> (102, 'IT'),
+    -> (103, 'Sales'),
+    -> (104, 'Marketing');
+Query OK, 4 rows affected (0.00 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+------------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> SELECT employees.emp_id, employees.name, employees.dept_id, department.dept_name
+    -> FROM employees
+    -> INNER JOIN department
+    -> ON employees.dept_id = department.dept_id;
++--------+--------+---------+-----------+
+| emp_id | name   | dept_id | dept_name |
++--------+--------+---------+-----------+
+|      1 | John   |     101 | HR        |
+|      2 | Sarah  |     102 | IT        |
+|      3 | Mike   |     103 | Sales     |
+|      4 | Rachel |     104 | Marketing |
++--------+--------+---------+-----------+
+4 rows in set (0.00 sec)
+------------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> SELECT employees.emp_id, employees.name, employees.dept_id, department.dept_name
+    -> FROM employees
+    -> LEFT JOIN department
+    -> ON employees.dept_id = department.dept_id;
++--------+--------+---------+-----------+
+| emp_id | name   | dept_id | dept_name |
++--------+--------+---------+-----------+
+|      1 | John   |     101 | HR        |
+|      2 | Sarah  |     102 | IT        |
+|      3 | Mike   |     103 | Sales     |
+|      4 | Rachel |     104 | Marketing |
++--------+--------+---------+-----------+
+4 rows in set (0.00 sec)
+------------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> SELECT employees.emp_id, employees.name, employees.dept_id, department.dept_name
+    -> FROM employees
+    -> RIGHT JOIN department
+    -> ON employees.dept_id = department.dept_id;
++--------+--------+---------+-----------+
+| emp_id | name   | dept_id | dept_name |
++--------+--------+---------+-----------+
+|      1 | John   |     101 | HR        |
+|      2 | Sarah  |     102 | IT        |
+|      3 | Mike   |     103 | Sales     |
+|      4 | Rachel |     104 | Marketing |
++--------+--------+---------+-----------+
+4 rows in set (0.00 sec)
+------------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> SELECT employees.emp_id, employees.name, employees.dept_id, department.dept_name
+    -> FROM employees
+    -> LEFT JOIN department
+    -> ON employees.dept_id = department.dept_id
+    ->
+    -> UNION
+    ->
+    -> SELECT employees.emp_id, employees.name, employees.dept_id, department.dept_name
+    -> FROM employees
+    -> RIGHT JOIN department
+    -> ON employees.dept_id = department.dept_id;
++--------+--------+---------+-----------+
+| emp_id | name   | dept_id | dept_name |
++--------+--------+---------+-----------+
+|      1 | John   |     101 | HR        |
+|      2 | Sarah  |     102 | IT        |
+|      3 | Mike   |     103 | Sales     |
+|      4 | Rachel |     104 | Marketing |
++--------+--------+---------+-----------+
+4 rows in set (0.02 sec)
